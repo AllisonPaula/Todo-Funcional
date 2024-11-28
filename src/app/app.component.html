@@ -1,0 +1,31 @@
+<div class="container">
+  <h1>{{ title }}</h1>
+
+  <!-- Task Form -->
+  <app-task-form (submitTask)="addTask($event)"></app-task-form>
+
+  <!-- Search Bar -->
+  <div class="search-container">
+    <input type="text" [(ngModel)]="searchTerm" placeholder="Search tasks..." class="search-input" />
+  </div>
+
+  <!-- Task Sections -->
+  <div class="tasks">
+    <div class="section to-do">
+      <h3>To Do</h3>
+      <app-todo *ngFor="let todo of todos | filterTodos: 'To Do' | search: searchTerm" [description]="todo.description"
+        [title]="todo.title" [status]="todo.status" [id]="todo.id" (deleteTask)="deleteTask($event)"></app-todo>
+    </div>
+    <div class="section in-progress">
+      <h3>In Progress</h3>
+      <app-todo *ngFor="let todo of todos | filterTodos: 'In Progress' | search: searchTerm"
+        [description]="todo.description" [title]="todo.title" [status]="todo.status" [id]="todo.id"
+        (deleteTask)="deleteTask($event)"></app-todo>
+    </div>
+    <div class="section done">
+      <h3>Done</h3>
+      <app-todo *ngFor="let todo of todos | filterTodos: 'Done' | search: searchTerm" [description]="todo.description"
+        [title]="todo.title" [status]="todo.status" [id]="todo.id" (deleteTask)="deleteTask($event)"></app-todo>
+    </div>
+  </div>
+</div>
