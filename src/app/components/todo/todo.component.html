@@ -1,8 +1,7 @@
-
 <div class="task">
   <h4>{{ title }}</h4>
   <p>{{ description }}</p>
-  <select [(ngModel)]="status">
+  <select [(ngModel)]="status" (ngModelChange)="updateStatus()">
     <option value="To Do">To Do</option>
     <option value="In Progress">In Progress</option>
     <option value="Done">Done</option>

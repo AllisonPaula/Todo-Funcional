@@ -12,7 +12,7 @@ import { SearchPipe } from './pipes/search.pipe';
     AppComponent,       
     TodoComponent,     
     TaskFormComponent,  
-    FilterTodosPipe, SearchPipe   
+    FilterTodosPipe, SearchPipe
   ],
   imports: [
     BrowserModule,      

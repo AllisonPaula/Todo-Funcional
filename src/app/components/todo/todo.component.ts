@@ -15,6 +15,7 @@ export class TodoComponent {
   @Input() id!: number;
   @Output() deleteTask = new EventEmitter<number>();
   @Output() editTask = new EventEmitter<Task>();
+  @Output() updatedTask = new EventEmitter<StatusTask>();
 
   onDelete(): void {
     this.deleteTask.emit(this.id);
@@ -22,5 +23,9 @@ export class TodoComponent {
 
   onEdit(): void {
     this.editTask.emit({ title: this.title, description: this.description, status: this.status, id: this.id });
+  }
+
+  updateStatus(){
+    this.updatedTask.emit(this.status)
   }
 }

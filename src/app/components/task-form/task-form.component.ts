@@ -1,4 +1,3 @@
-
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Task, StatusTask } from '../../interfaces/todo.interface';
@@ -28,13 +27,13 @@ export class TaskFormComponent {
   addTask(): void {
     if (this.formGroup.valid) {
       const newTask: Task = {
-        id: 0, 
+        id: 0,
         title: this.formGroup.get('title')!.value,
         description: this.formGroup.get('description')!.value,
         status: this.formGroup.get('status')!.value,
       };
       this.submitTask.emit(newTask);
-      this.formGroup.reset({ status: 'To Do' }); 
+      this.formGroup.reset({ status: 'To Do' });
     }
   }
 }
