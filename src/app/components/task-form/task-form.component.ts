@@ -1,6 +1,7 @@
+
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { Task } from '../../interfaces/todo.interface';
+import { Task, StatusTask } from '../../interfaces/todo.interface';
 
 @Component({
   selector: 'app-task-form',
@@ -13,27 +14,27 @@ export class TaskFormComponent {
   formGroup: FormGroup<{
     title: FormControl<string>;
     description: FormControl<string>;
-    status : FormControl<string>;
+    status: FormControl<StatusTask>;
   }>;
 
   constructor(private fb: FormBuilder) {
     this.formGroup = this.fb.nonNullable.group({
       title: this.fb.nonNullable.control('', [Validators.required, Validators.minLength(3)]),
       description: this.fb.nonNullable.control('', [Validators.required, Validators.minLength(5)]),
-      status: this.fb.nonNullable.control('To Do', Validators.required),
+      status: this.fb.nonNullable.control('To Do' as StatusTask, Validators.required),
     });
   }
 
   addTask(): void {
     if (this.formGroup.valid) {
       const newTask: Task = {
-        id: 0,
+        id: 0, 
         title: this.formGroup.get('title')!.value,
         description: this.formGroup.get('description')!.value,
         status: this.formGroup.get('status')!.value,
       };
       this.submitTask.emit(newTask);
-      this.formGroup.reset({ status: 'To Do' });
+      this.formGroup.reset({ status: 'To Do' }); 
     }
   }
 }

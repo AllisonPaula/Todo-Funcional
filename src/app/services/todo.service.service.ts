@@ -1,30 +1,52 @@
+
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Task } from '../interfaces/todo.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TodoService {
-  private tasks: Task[] = [];
+  private tasks: Task[] = [
+    { id: 1, title: 'Go Home', description: 'It is almost time to go', status: 'To Do' },
+    { id: 2, title: 'Finish the homework', description: 'You can do it', status: 'In Progress' },
+    { id: 3, title: 'Cook', description: 'Good job', status: 'Done' },
+  ];
 
-  constructor() {
-    // Inicializa con algunas tareas
-    this.tasks = [
-      { id: 1, title: 'Go Home', description: 'It is almost time to go', status: 'To Do' },
-      { id: 2, title: 'Finish the homework', description: 'You can do it', status: 'In Progress' },
-      { id: 3, title: 'Cook', description: 'Good job', status: 'Done' },
-    ];
+  // Observable para gestionar cambios en la lista de tareas
+  private tasksSubject = new BehaviorSubject<Task[]>(this.tasks);
+
+  constructor() {}
+
+  // Obtener todas las tareas como Observable
+  get(): Observable<Task[]> {
+    return this.tasksSubject.asObservable();
   }
 
-  get(): Task[] {
-    return this.tasks;
+  // Obtener una tarea por ID
+  getOne(taskId: number): Observable<Task | undefined> {
+    const task = this.tasks.find((t) => t.id === taskId);
+    return new BehaviorSubject(task).asObservable();
   }
 
+  
   add(task: Task): void {
-    this.tasks.push(task); // Agregar tarea
+    task.id = this.tasks.length > 0 ? Math.max(...this.tasks.map((t) => t.id)) + 1 : 1; 
+    this.tasks.push(task);
+    this.tasksSubject.next(this.tasks); 
   }
+
 
   delete(taskId: number): void {
-    this.tasks = this.tasks.filter(task => task.id !== taskId); // Eliminar tarea
+    this.tasks = this.tasks.filter((t) => t.id !== taskId);
+    this.tasksSubject.next(this.tasks); 
+  }
+
+ 
+  update(updatedTask: Task): void {
+    const index = this.tasks.findIndex(task => task.id === updatedTask.id);
+    if (index !== -1) {
+      this.tasks[index] = updatedTask; 
+    }
   }
 }

@@ -1,5 +1,6 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
-import { Task } from './interfaces/todo.interface';
+
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Task} from './interfaces/todo.interface';
 import { TodoService } from './services/todo.service.service';
 
 @Component({
@@ -7,31 +8,49 @@ import { TodoService } from './services/todo.service.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'To-Do List';
   todos: Task[] = [];
   searchTerm: string = '';
+  editingTask: Task | null = null;
 
   constructor(private todoService: TodoService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    this.loadTasks(); // Cargar las tareas al inicializar
+    this.loadTasks();
   }
 
   loadTasks(): void {
-    // Cargar las tareas desde el servicio
-    this.todos = this.todoService.get();
-    this.cdr.detectChanges(); 
+    // Obtener las tareas desde el servicio usando Observable
+    this.todoService.get().subscribe((tasks) => {
+      this.todos = tasks;
+      this.cdr.detectChanges(); 
+    });
   }
 
   addTask(newTask: Task): void {
-    // Usar el servicio para agregar la nueva tarea
     this.todoService.add(newTask);
-    this.loadTasks(); // Recargar las tareas para reflejar el cambio
+    this.loadTasks(); 
   }
 
   deleteTask(taskId: number): void {
     this.todoService.delete(taskId);
-    this.loadTasks(); // Recargar las tareas después de eliminar una tarea
+    this.loadTasks();
+  }
+
+  startEditing(task: Task): void {
+    this.editingTask = { ...task }; 
+  }
+
+  cancelEditing(): void {
+    this.editingTask = null;
+  }
+
+  onUpdate(updatedTask: Task): void {
+    if (updatedTask) {
+      this.todoService.update(updatedTask);
+      this.loadTasks(); 
+      this.editingTask = null;
+    }
   }
 }

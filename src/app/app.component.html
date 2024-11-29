@@ -14,18 +14,46 @@
     <div class="section to-do">
       <h3>To Do</h3>
       <app-todo *ngFor="let todo of todos | filterTodos: 'To Do' | search: searchTerm" [description]="todo.description"
-        [title]="todo.title" [status]="todo.status" [id]="todo.id" (deleteTask)="deleteTask($event)"></app-todo>
+        [title]="todo.title" [status]="todo.status" [id]="todo.id" (deleteTask)="deleteTask($event)"
+        (editTask)="startEditing($event)"></app-todo>
     </div>
     <div class="section in-progress">
       <h3>In Progress</h3>
       <app-todo *ngFor="let todo of todos | filterTodos: 'In Progress' | search: searchTerm"
         [description]="todo.description" [title]="todo.title" [status]="todo.status" [id]="todo.id"
-        (deleteTask)="deleteTask($event)"></app-todo>
+        (deleteTask)="deleteTask($event)" (editTask)="startEditing($event)"></app-todo>
     </div>
     <div class="section done">
       <h3>Done</h3>
       <app-todo *ngFor="let todo of todos | filterTodos: 'Done' | search: searchTerm" [description]="todo.description"
-        [title]="todo.title" [status]="todo.status" [id]="todo.id" (deleteTask)="deleteTask($event)"></app-todo>
+        [title]="todo.title" [status]="todo.status" [id]="todo.id" (deleteTask)="deleteTask($event)"
+        (editTask)="startEditing($event)"></app-todo>
     </div>
+  </div>
+
+
+  <!--Edit Task Form / It needs validations-->
+  <div *ngIf="editingTask" class="edit-form">
+    <h2>Edit Task</h2>
+    <form (ngSubmit)="onUpdate(editingTask)">
+      <div>
+        <label for="title">Title</label>
+        <input id="title" [(ngModel)]="editingTask.title" name="title" required />
+      </div>
+      <div>
+        <label for="description">Description</label>
+        <input id="description" [(ngModel)]="editingTask.description" name="description" required />
+      </div>
+      <div>
+        <label for="status">Status</label>
+        <select [(ngModel)]="editingTask.status" name="status">
+          <option value="To Do">To Do</option>
+          <option value="In Progress">In Progress</option>
+          <option value="Done">Done</option>
+        </select>
+      </div>
+      <button type="submit" class="save-btn">Update</button>
+      <button type="button" class="cancel-btn" (click)="cancelEditing()">Cancel</button>
+    </form>
   </div>
 </div>
