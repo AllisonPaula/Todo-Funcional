@@ -1,7 +1,3 @@
-.error {
-  color: red;
-}
-
 /* General Styling */
 body {
   font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
@@ -29,6 +25,10 @@ h2 {
 
 }
 
+.error {
+  color: red;
+}
+
 /* Task Form */
 .task-form {
   background-color: #ffffff;
@@ -47,6 +47,10 @@ h2 {
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 16px;
+}
+
+.task-form textarea{
+  resize: none;
 }
 
 .task-form button {
@@ -132,7 +136,7 @@ h2 {
   background-color: #f9f9f9;
 }
 
-/* Button Styling*/
+/* Buttons Styling*/
 .delete-btn,
 .cancel-btn {
   background-color: #db3529;
@@ -168,6 +172,23 @@ h2 {
   letter-spacing: 0.9px;
 }
 
+.edit-btn {
+  background-color: #026991;
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 8px;
+  font-weight: 700;
+  letter-spacing: 0.9px;
+}
+
+.edit-btn:hover {
+  background-color: #3690ac;
+}
+
 /*Edit Task Section*/
 .edit-form input,
 .edit-form textarea,
@@ -198,24 +219,6 @@ h2 {
   gap: 20px;
   margin-top: 30px;
 }
-
-.edit-btn {
-  background-color: #026991;
-  color: white;
-  padding: 8px 15px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  margin-left: 8px;
-  font-weight: 700;
-  letter-spacing: 0.9px;
-}
-
-.edit-btn:hover {
-  background-color: #3690ac;
-}
-
 
 /* Color Customization for Task Status */
 .to-do {

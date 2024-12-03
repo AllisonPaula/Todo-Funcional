@@ -15,7 +15,7 @@ export class TaskFormComponent {
     description: FormControl<string>;
     status: FormControl<StatusTask>;
   }>;
-
+//Requisitos para agregar una tarea
   constructor(private fb: FormBuilder) {
     this.formGroup = this.fb.nonNullable.group({
       title: this.fb.nonNullable.control('', [Validators.required, Validators.minLength(3)]),
@@ -23,7 +23,7 @@ export class TaskFormComponent {
       status: this.fb.nonNullable.control('To Do' as StatusTask, Validators.required),
     });
   }
-
+//Agregar tarea
   addTask(): void {
     if (this.formGroup.valid) {
       const newTask: Task = {
