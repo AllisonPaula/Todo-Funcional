@@ -3,6 +3,7 @@ import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@ang
 import { StatusTask, Task } from './interfaces/todo.interface';
 import { TodoService } from './services/todo.service.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -95,5 +96,13 @@ export class AppComponent implements OnInit {
 //La tarea se puede editar mientras no se haya borrado
   canDelete(): boolean {
     return this.editingTask === null;
+  }
+
+  onTaskUpdated(updatedTask: Task): void {
+    const index = this.todos.findIndex((task) => task.id === updatedTask.id);
+    if (index !== -1) {
+      this.todos[index] = updatedTask;
+    }
+    this.cancelEditing();
   }
 }

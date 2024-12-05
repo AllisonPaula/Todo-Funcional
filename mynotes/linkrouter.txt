@@ -1,0 +1,61 @@
+APP.ROUTER.TS
+import { Routes } from '@angular/router';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { HomeComponent } from './components/home/home.component';
+import { MyComponent } from './components/my/my.component';
+
+export const routes: Routes = [
+   { path: 'home', component: HomeComponent },
+   { path: 'my', component: MyComponent },
+   { path: '', redirectTo: '/home', pathMatch: 'full' },
+   { path: '**', component: PageNotFoundComponent },
+  ];
+  
+APP.COMPONENT.TS
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { MyComponent } from "./components/my/my.component";
+import { HomeComponent } from "./components/home/home.component";
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [RouterOutlet, PageNotFoundComponent, MyComponent, HomeComponent],
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.css'
+})
+export class AppComponent {
+  title = 'routering';
+}
+
+APP.COMPONENT.HTML
+<app-page-not-found></app-page-not-found>
+<router-outlet />
+
+
+
+PAGENOTFOUNFCOMPONENT.COMPONENT.TS
+import { Component } from '@angular/core';
+import { RouterLink, RouterModule } from '@angular/router';
+
+@Component({
+  selector: 'app-page-not-found',
+  templateUrl: './page-not-found.component.html',
+  standalone: true,
+  imports:[RouterModule, RouterLink],
+  styleUrl: './page-not-found.component.css'
+})
+export class PageNotFoundComponent {
+
+}
+
+PAGENOTFOUNFCOMPONENT.COMPONENT.HTML<div class="page-not-found">
+    <img src="assets\list.png" alt="404 Error" />
+    <h1>Page Not Found</h1>
+    <p>The page you are looking for does not exist.</p>
+    <button [routerLink]="['home']">Home</button>
+    <button [routerLink]="['my']">My</button>
+  </div>  
+
+  

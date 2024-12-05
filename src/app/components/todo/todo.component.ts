@@ -31,4 +31,6 @@ export class TodoComponent {
   updateStatus(){
     this.updatedTask.emit(this.status)
   }
+
+  
 }
