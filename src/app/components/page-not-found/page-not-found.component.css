@@ -1,0 +1,26 @@
+.page-not-found {
+    text-align: center;
+    color: #fff;
+}
+
+.imagen {
+    width: 100px;
+    height: 100px;
+    align-items: center;
+}
+
+h1,
+h2 {
+    color: #fff;
+}
+
+h2 {
+    font-size: 200px;
+    font-weight: bold;
+    margin-top: 0%;
+}
+a{
+    text-decoration: underline;
+    color: white;
+    font-size: 20px;
+}

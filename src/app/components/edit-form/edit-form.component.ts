@@ -14,13 +14,14 @@ export class EditFormComponent implements OnInit {
   @Output() updateTask = new EventEmitter<Task>();
   @Output() cancelEdit = new EventEmitter<void>();
 
-  editFormGroup: FormGroup<{ 
+  editFormGroup: FormGroup<{
     title: FormControl<string>;
     description: FormControl<string>;
     status: FormControl<StatusTask>;
   }>;
 
   isDeleting: boolean = false;
+  todos: Task[] = [];
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private todoService: TodoService, private router: Router) {
     this.editFormGroup = this.fb.nonNullable.group({
@@ -31,39 +32,42 @@ export class EditFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-  const id = Number(this.route.snapshot.paramMap.get('id'));
+    const id = Number(this.route.snapshot.paramMap.get('id'));
 
-  if (id) {
-    this.todoService.getTaskById(id).subscribe((task) => {
-      // Verifica si task es undefined y asigna null si lo es
-      if (task) {
-        this.editingTask = task;
-        this.editFormGroup.patchValue({
-          title: this.editingTask.title,
-          description: this.editingTask.description,
-          status: this.editingTask.status,
-        });
-      } else {
+    if (id) {
+      this.todoService.getOne(id).subscribe((task) => {
+        // Verifica si task es undefined y asigna null si lo es
+        if (task) {
+          this.editingTask = task;
+          this.editFormGroup.patchValue({
+            title: this.editingTask.title,
+            description: this.editingTask.description,
+            status: this.editingTask.status,
+          });
+        }
         this.editingTask = null; // Asigna null si no se encuentra la tarea
-      }
-    });
-  }
-}
-
-
-  onUpdate(): void {
-    if (this.editFormGroup.valid && this.editingTask) {
-      const updatedTask: Task = {
-        ...this.editingTask,
-        ...this.editFormGroup.value,
-      };
-
-      this.todoService.updateTask(updatedTask).subscribe(() => {
-        this.router.navigate(['/']); // Redirige al home
       });
     }
   }
 
+  //Editando
+  onUpdate(): void {
+    console.log("No entra")
+    if (this.editFormGroup.valid && this.editingTask) {
+      console.log("Entra")
+      const updatedTask: Task = {
+        ...this.editingTask,
+        ...this.editFormGroup.value,
+      };
+      console.log("Valida")
+      this.todoService.updateTask(updatedTask).subscribe(() => {
+        this.router.navigate(['/']); // Redirige al home al actualizar la tarea
+      });
+      console.log("Resolvio")
+    }this.router.navigate(['/']); console.log("Sale")
+  }
+
+  //Cancelar edicion
   cancelEditing(): void {
     this.router.navigate(['/']);
   }

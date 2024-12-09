@@ -20,7 +20,8 @@ import { HomeComponent } from './components/home/home.component';
     FilterTodosPipe, 
     SearchPipe, 
     EditFormComponent, 
-    PageNotFoundComponent, HomeComponent
+    PageNotFoundComponent, 
+    HomeComponent
   ],
   imports: [
     BrowserModule,

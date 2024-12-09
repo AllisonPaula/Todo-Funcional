@@ -1,47 +1,46 @@
 <div class="container">
-    <h1>{{ title }}</h1>
-  
-    <!-- Task Form -->
-    <app-task-form (submitTask)="addTask($event)"></app-task-form>
-  
-    <!-- Search Bar -->
-    <div class="search-container">
-      <input type="text" [(ngModel)]="searchTerm" placeholder="Search tasks..." class="search-input" />
+  <h1>{{ title }}</h1>
+
+  <!-- Task Form -->
+  <app-task-form (submitTask)="addTask($event)"></app-task-form>
+
+  <!-- Search Bar -->
+  <div class="search-container">
+    <input type="text" [(ngModel)]="searchTerm" placeholder="Search tasks..." class="search-input" />
+  </div>
+
+  <!-- Task Sections -->
+  <div class="tasks">
+    <div class="section to-do">
+      <h3>To Do</h3>
+      <app-todo *ngFor="let todo of todos | filterTodos: 'To Do' | search: searchTerm; index as id "
+        [description]="todo.description" [title]="todo.title" [status]="todo.status" [id]="todo.id"
+        (deleteTask)="deleteTask($event)" (editTask)="startEditing($event)"
+        (updatedTask)="updateTaskStatus(id, $event)"></app-todo>
     </div>
-  
-    <!-- Task Sections -->
-    <div class="tasks">
-      <div class="section to-do">
-        <h3>To Do</h3>
-        <app-todo *ngFor="let todo of todos | filterTodos: 'To Do' | search: searchTerm; index as id "
-          [description]="todo.description" [title]="todo.title" [status]="todo.status" [id]="todo.id"
-          (deleteTask)="deleteTask($event)" (editTask)="startEditing($event)"
-          (updatedTask)="updateTaskStatus(id, $event)"></app-todo>
-      </div>
-      <div class="section in-progress">
-        <h3>In Progress</h3>
-        <app-todo *ngFor="let todo of todos | filterTodos: 'In Progress' | search: searchTerm; index as id"
-          [description]="todo.description" [title]="todo.title" [status]="todo.status" [id]="todo.id"
-          (deleteTask)="deleteTask($event)" (editTask)="startEditing($event)"
-          (updatedTask)="updateTaskStatus(id, $event)"></app-todo>
-      </div>
-      <div class="section done">
-        <h3>Done</h3>
-        <app-todo *ngFor="let todo of todos | filterTodos: 'Done' | search: searchTerm; index as id"
-          [description]="todo.description" [title]="todo.title" [status]="todo.status" [id]="todo.id"
-          (deleteTask)="deleteTask($event)" (updatedTask)="updateTaskStatus(id, $event)"
-          (editTask)="startEditing($event)"></app-todo>
-      </div>
+    <div class="section in-progress">
+      <h3>In Progress</h3>
+      <app-todo *ngFor="let todo of todos | filterTodos: 'In Progress' | search: searchTerm; index as id"
+        [description]="todo.description" [title]="todo.title" [status]="todo.status" [id]="todo.id"
+        (deleteTask)="deleteTask($event)" (editTask)="startEditing($event)"
+        (updatedTask)="updateTaskStatus(id, $event)"></app-todo>
     </div>
-  
-  
-    <!--Edit task Form-->
-    <div *ngIf="editingTask">
-      <app-edit-form
-        [editingTask]="editingTask"
-        (updateTask)="onTaskUpdated($event)"
-        (cancelEdit)="cancelEditing()">
-      </app-edit-form>
+    <div class="section done">
+      <h3>Done</h3>
+      <app-todo *ngFor="let todo of todos | filterTodos: 'Done' | search: searchTerm; index as id"
+        [description]="todo.description" [title]="todo.title" [status]="todo.status" [id]="todo.id"
+        (deleteTask)="deleteTask($event)" (updatedTask)="updateTaskStatus(id, $event)"
+        (editTask)="startEditing($event)"></app-todo>
     </div>
   </div>
-  
+
+
+  <!--Edit task Form-->
+  <div *ngIf="editingTask">
+    <app-edit-form
+      [editingTask]="editingTask"
+      (updateTask)="onTaskUpdated($event)"
+      (cancelEdit)="cancelEditing()">
+    </app-edit-form>
+  </div>
+</div>

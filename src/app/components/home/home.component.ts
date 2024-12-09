@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@ang
 import { StatusTask,Task } from '../../interfaces/todo.interface';
 import { TodoService } from '../../services/todo.service.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -25,7 +26,7 @@ export class HomeComponent implements OnInit {
   searchTerm: string = '';  //Busqueda de tarea
   
   //Constructor para editar tarea
-  constructor(private todoService: TodoService, private cdr: ChangeDetectorRef, private fb:FormBuilder) {
+  constructor(private todoService: TodoService, private cdr: ChangeDetectorRef, private fb:FormBuilder, private router: Router) {
     this.editFormGroup = this.fb.nonNullable.group({
       title: this.fb.nonNullable.control('', [Validators.required, Validators.minLength(3)]),
       description: this.fb.nonNullable.control('', [Validators.required, Validators.minLength(5)]),
@@ -40,12 +41,12 @@ export class HomeComponent implements OnInit {
 
   //Cargar las tareas
   loadTasks(): void {
-    // Obtener las tareas desde el servicio usando Observable
     this.todoService.get().subscribe((tasks) => {
       this.todos = tasks;
-      this.cdr.detectChanges();
+      this.cdr.detectChanges(); // Fuerza la detección de cambios
     });
   }
+  
 
   //Agregar tarea
   addTask(newTask: Task): void {
@@ -64,28 +65,17 @@ export class HomeComponent implements OnInit {
     this.editingTask = task;
     this.isDeleting = false;
     this.editFormGroup.patchValue({
-      title: task.title,
-      description: task.description,
-      status: task.status,
-    });
+      title: this.editingTask.title,
+      description: this.editingTask.description,
+      status: this.editingTask.status,
+    });    
   }
 
 //Editar estado de la tarea cuando este cambie
   updateTaskStatus(index: number, status: Task['status']){
     this.todos[index].status = status;
   }
-
-  //En edicion de tarea
-  onUpdate(): void {
-    if (this.editFormGroup.valid && this.editingTask) {
-      const updatedTask: Task = {
-        ...this.editingTask,
-        ...this.editFormGroup.value,
-      };
-      this.updateTask.emit(updatedTask);
-      this.cancelEditing();
-    }
-  }
+  
 //Cancela la edicion de la tarea
   cancelEditing(): void {
     this.editingTask = null;
@@ -97,10 +87,22 @@ export class HomeComponent implements OnInit {
   }
 
   onTaskUpdated(updatedTask: Task): void {
-    const index = this.todos.findIndex((task) => task.id === updatedTask.id);
-    if (index !== -1) {
-      this.todos[index] = updatedTask;
+    this.todoService.updateTask(updatedTask).subscribe(() => {
+      this.loadTasks(); // Refresca la lista de tareas
+      this.cancelEditing(); // Cancela la edición
+    });
+  }
+
+  onUpdate(): void {
+    if (this.editFormGroup.valid && this.editingTask) {
+      const updatedTask: Task = {
+        ...this.editingTask,
+        ...this.editFormGroup.value,
+      };
+  
+      this.todoService.updateTask(updatedTask).subscribe(() => {
+        this.router.navigate(['/']); // Redirige al home
+      });
     }
-    this.cancelEditing();
   }
 }
