@@ -1,6 +1,6 @@
-
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Task, StatusTask } from '../../interfaces/todo.interface';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -17,6 +17,8 @@ export class TodoComponent {
   @Output() editTask = new EventEmitter<Task>();
   @Output() updatedTask = new EventEmitter<StatusTask>();
 
+
+  constructor(private router: Router) {}
   //Eliminar tarea
   onDelete(): void {
     this.deleteTask.emit(this.id);
@@ -24,13 +26,11 @@ export class TodoComponent {
 
   //Editar tarea
   onEdit(): void {
-    this.editTask.emit({ title: this.title, description: this.description, status: this.status, id: this.id });
+    this.router.navigate(['edit', this.id]); // Redirecciona a /edit/:id
   }
 
   //Actualizar estado de la tarea
   updateStatus(){
     this.updatedTask.emit(this.status)
-  }
-
-  
+  } 
 }

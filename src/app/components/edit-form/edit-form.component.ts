@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Task, StatusTask } from '../../interfaces/todo.interface';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TodoService } from '../../services/todo.service.service';
 
 @Component({
   selector: 'app-edit-form',
@@ -20,7 +22,7 @@ export class EditFormComponent implements OnInit {
 
   isDeleting: boolean = false;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private route: ActivatedRoute, private todoService: TodoService, private router: Router) {
     this.editFormGroup = this.fb.nonNullable.group({
       title: this.fb.nonNullable.control('', [Validators.required, Validators.minLength(3)]),
       description: this.fb.nonNullable.control('', [Validators.required, Validators.minLength(5)]),
@@ -29,14 +31,25 @@ export class EditFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.editingTask) {
-      this.editFormGroup.patchValue({
-        title: this.editingTask.title,
-        description: this.editingTask.description,
-        status: this.editingTask.status,
-      });
-    }
+  const id = Number(this.route.snapshot.paramMap.get('id'));
+
+  if (id) {
+    this.todoService.getTaskById(id).subscribe((task) => {
+      // Verifica si task es undefined y asigna null si lo es
+      if (task) {
+        this.editingTask = task;
+        this.editFormGroup.patchValue({
+          title: this.editingTask.title,
+          description: this.editingTask.description,
+          status: this.editingTask.status,
+        });
+      } else {
+        this.editingTask = null; // Asigna null si no se encuentra la tarea
+      }
+    });
   }
+}
+
 
   onUpdate(): void {
     if (this.editFormGroup.valid && this.editingTask) {
@@ -44,12 +57,14 @@ export class EditFormComponent implements OnInit {
         ...this.editingTask,
         ...this.editFormGroup.value,
       };
-      this.updateTask.emit(updatedTask);
+
+      this.todoService.updateTask(updatedTask).subscribe(() => {
+        this.router.navigate(['/']); // Redirige al home
+      });
     }
   }
 
   cancelEditing(): void {
-    this.cancelEdit.emit();
+    this.router.navigate(['/']);
   }
 }
-

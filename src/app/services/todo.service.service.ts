@@ -1,6 +1,6 @@
 
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { Task } from '../interfaces/todo.interface';
 
 @Injectable({
@@ -23,6 +23,11 @@ export class TodoService {
     return this.tasksSubject.asObservable();
   }
 
+  getTaskById(id: number): Observable<Task | undefined> {
+    const task = this.tasks.find((task) => task.id === id);
+    return of(task);
+  }
+
   // Obtener una tarea por ID
   getOne(taskId: number): Observable<Task | undefined> {
     const task = this.tasks.find((t) => t.id === taskId);
@@ -43,10 +48,11 @@ export class TodoService {
   }
 
  
-  update(updatedTask: Task): void {
-    const index = this.tasks.findIndex(task => task.id === updatedTask.id);
+  updateTask(updatedTask: Task): Observable<void> {
+    const index = this.tasks.findIndex((task) => task.id === updatedTask.id);
     if (index !== -1) {
-      this.tasks[index] = updatedTask; 
+      this.tasks[index] = updatedTask;
     }
+    return of();
   }
 }
