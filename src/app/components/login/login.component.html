@@ -1,0 +1,17 @@
+<div class="task">
+    <div class="wel">
+      <h1>{{title}}</h1>
+      <!--<p>{{description}}</p>-->
+      <img class="ima" src="assets\avatar.png" alt="avatar" />
+    </div>
+    <div class="us">
+      <label>User</label>
+      <input type="textarea" placeholder="Enter your user">
+      <label>Password</label>
+      <input type="password" placeholder="Enter your password">
+    </div>
+    <div class="in">
+      <button [routerLink]="['home']">Log In</button> <!--Redirige a Page Not Found-->
+      <a href="home">Sig Up</a>  <!--Redirige a la pagina Hom-e-->
+    </div>
+  </div>

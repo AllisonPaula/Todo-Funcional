@@ -10,6 +10,7 @@ import { EditFormComponent } from './components/edit-form/edit-form.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HomeComponent } from './components/home/home.component';
+import { LoginComponent } from './components/login/login.component';
 
 
 @NgModule({
@@ -21,7 +22,7 @@ import { HomeComponent } from './components/home/home.component';
     SearchPipe, 
     EditFormComponent, 
     PageNotFoundComponent, 
-    HomeComponent
+    HomeComponent, LoginComponent
   ],
   imports: [
     BrowserModule,

@@ -46,25 +46,22 @@ export class EditFormComponent implements OnInit {
           });
         }
         this.editingTask = null; // Asigna null si no se encuentra la tarea
+        //this.router.navigate(['**']); //Redirige a la pagina de error
       });
     }
   }
 
   //Editando
   onUpdate(): void {
-    console.log("No entra")
     if (this.editFormGroup.valid && this.editingTask) {
-      console.log("Entra")
       const updatedTask: Task = {
         ...this.editingTask,
         ...this.editFormGroup.value,
       };
-      console.log("Valida")
       this.todoService.updateTask(updatedTask).subscribe(() => {
         this.router.navigate(['/']); // Redirige al home al actualizar la tarea
       });
-      console.log("Resolvio")
-    }this.router.navigate(['/']); console.log("Sale")
+    }
   }
 
   //Cancelar edicion
