@@ -15,7 +15,7 @@ export class TodoService {
   // Observable para gestionar cambios en la lista de tareas
   private tasksSubject = new BehaviorSubject<Task[]>(this.tasks);
 
-  constructor() {}
+  constructor() { }
 
   // Obtener todas las tareas como Observable
   get(): Observable<Task[]> {
@@ -35,20 +35,21 @@ export class TodoService {
   }
 
   add(task: Task): void {
-    task.id = this.tasks.length > 0 ? Math.max(...this.tasks.map((t) => t.id)) + 1 : 1; 
+    task.id = this.tasks.length > 0 ? Math.max(...this.tasks.map((t) => t.id)) + 1 : 1;
     this.tasks.push(task);
-    this.tasksSubject.next(this.tasks); 
+    this.tasksSubject.next(this.tasks);
   }
 
   delete(taskId: number): void {
     this.tasks = this.tasks.filter((t) => t.id !== taskId);
-    this.tasksSubject.next(this.tasks); 
+    this.tasksSubject.next(this.tasks);
   }
 
   updateTask(updatedTask: Task): Observable<void> {
     const index = this.tasks.findIndex((task) => task.id === updatedTask.id);
     if (index !== -1) {
       this.tasks[index] = updatedTask;
+      this.tasksSubject.next(this.tasks); // Notifica el cambio a todos los suscriptores
     }
     return of();
   }

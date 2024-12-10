@@ -3,7 +3,7 @@ import { StatusTask, Task } from '../../interfaces/todo.interface';
 import { TodoService } from '../../services/todo.service.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { EditFormComponent } from '../edit-form/edit-form.component';
+
 
 @Component({
   selector: 'app-home',
@@ -22,9 +22,9 @@ export class HomeComponent implements OnInit {
   editingTask: Task | null = null; //Verifica que la tarea se este editando
   isDeleting: boolean = false; //Verifica si la tarea se ha eliminado
 
-  title = 'To-Do List'; 
-  todos: Task[] = []; 
-  searchTerm: string = '';  
+  title = 'To-Do List';
+  todos: Task[] = [];
+  searchTerm: string = '';
 
   //Constructor para editar tarea
   constructor(private todoService: TodoService, private cdr: ChangeDetectorRef, private fb: FormBuilder, private router: Router) {
@@ -86,13 +86,14 @@ export class HomeComponent implements OnInit {
   }
 
   onTaskUpdated(updatedTask: Task): void {
-    this.todoService.updateTask(updatedTask).subscribe(() => {
-      this.loadTasks(); // Refresca la lista de tareas
-      this.cancelEditing(); // Cancela la edición
-    });
+    const index = this.todos.findIndex((task) => task.id === updatedTask.id);
+    if (index !== -1) {
+      this.todos[index] = updatedTask;
+    }
+    this.loadTasks(); // Refresca las tareas desde el servicio
   }
 
-  logout(){
+  logout() {
     this.router.navigate(['/']);
   }
 }

@@ -14,9 +14,9 @@ export class EditFormComponent implements OnInit {
   @Output() updateTask = new EventEmitter<Task>();
 
   editFormGroup: FormGroup<{
-    title: FormControl<string>;
-    description: FormControl<string>;
-    status: FormControl<StatusTask>;
+    title: FormControl<string | null>;
+    description: FormControl<string | null>;
+    status: FormControl<StatusTask | null>;
   }>;
 
   isDeleting: boolean = false;
@@ -24,9 +24,9 @@ export class EditFormComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private todoService: TodoService, private router: Router, private cdr: ChangeDetectorRef) {
     this.editFormGroup = this.fb.nonNullable.group({
-      title: this.fb.nonNullable.control('', [Validators.required, Validators.minLength(3)]),
-      description: this.fb.nonNullable.control('', [Validators.required, Validators.minLength(5)]),
-      status: this.fb.nonNullable.control('To Do' as StatusTask, Validators.required),
+      title: this.fb.control<string | null>('', [Validators.required, Validators.minLength(3)]),
+      description: this.fb.control<string | null>('', [Validators.required, Validators.minLength(5)]),
+      status: this.fb.control<StatusTask | null>('To Do', Validators.required),
     });
   }
   loadTasks(): void {
@@ -46,11 +46,6 @@ export class EditFormComponent implements OnInit {
             description: this.editingTask.description,
             status: this.editingTask.status,
           });
-          /////////////////////////////////////////
-          console.log("id:", this.editingTask.id);
-          console.log("Title:", this.editingTask.title);
-          console.log("description:", this.editingTask.description);
-          console.log("Status:", this.editingTask.status);
         }
       });
     }
@@ -79,7 +74,7 @@ export class EditFormComponent implements OnInit {
     }
   }
 
-  //Cancelar edicion
+  // Cancelar edicion
   cancelEditing(): void {
     this.router.navigate(['home']);
   }
