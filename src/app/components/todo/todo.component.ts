@@ -2,7 +2,6 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Task, StatusTask } from '../../interfaces/todo.interface';
 import { Router } from '@angular/router';
 
-
 @Component({
   selector: 'app-todo',
   templateUrl: './todo.component.html',
@@ -16,7 +15,6 @@ export class TodoComponent {
   @Output() deleteTask = new EventEmitter<number>(); //Decorador de salida de datod
   @Output() editTask = new EventEmitter<Task>();
   @Output() updatedTask = new EventEmitter<StatusTask>();
-
 
   constructor(private router: Router) {}
   //Eliminar tarea

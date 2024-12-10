@@ -1,8 +1,9 @@
 import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { StatusTask,Task } from '../../interfaces/todo.interface';
+import { StatusTask, Task } from '../../interfaces/todo.interface';
 import { TodoService } from '../../services/todo.service.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { EditFormComponent } from '../edit-form/edit-form.component';
 
 @Component({
   selector: 'app-home',
@@ -12,21 +13,21 @@ import { Router } from '@angular/router';
 export class HomeComponent implements OnInit {
   @Output() updateTask = new EventEmitter<Task>(); //Decorador para salida de datos
 
-  editFormGroup: FormGroup<{ 
+  editFormGroup: FormGroup<{
     title: FormControl<string>;
     description: FormControl<string>;
     status: FormControl<StatusTask>;
   }>;
 
   editingTask: Task | null = null; //Verifica que la tarea se este editando
-  isDeleting: boolean= false; //Verifica si la tarea se ha eliminado
+  isDeleting: boolean = false; //Verifica si la tarea se ha eliminado
 
-  title = 'To-Do List'; //Titulo de la pagina
-  todos: Task[] = []; //Lista dde tareas
-  searchTerm: string = '';  //Busqueda de tarea
-  
+  title = 'To-Do List'; 
+  todos: Task[] = []; 
+  searchTerm: string = '';  
+
   //Constructor para editar tarea
-  constructor(private todoService: TodoService, private cdr: ChangeDetectorRef, private fb:FormBuilder, private router: Router) {
+  constructor(private todoService: TodoService, private cdr: ChangeDetectorRef, private fb: FormBuilder, private router: Router) {
     this.editFormGroup = this.fb.nonNullable.group({
       title: this.fb.nonNullable.control('', [Validators.required, Validators.minLength(3)]),
       description: this.fb.nonNullable.control('', [Validators.required, Validators.minLength(5)]),
@@ -46,7 +47,6 @@ export class HomeComponent implements OnInit {
       this.cdr.detectChanges(); // Fuerza la detección de cambios
     });
   }
-  
 
   //Agregar tarea
   addTask(newTask: Task): void {
@@ -68,20 +68,19 @@ export class HomeComponent implements OnInit {
       title: this.editingTask.title,
       description: this.editingTask.description,
       status: this.editingTask.status,
-    });    
+    });
   }
 
-//Editar estado de la tarea cuando este cambie
-  updateTaskStatus(index: number, status: Task['status']){
+  //Editar estado de la tarea cuando este cambie
+  updateTaskStatus(index: number, status: Task['status']) {
     this.todos[index].status = status;
   }
-  
-//Cancela la edicion de la tarea
+  //Cancela la edicion de la tarea
   cancelEditing(): void {
     this.editingTask = null;
     this.editFormGroup.reset({ status: 'To Do' });
   }
-//La tarea se puede editar mientras no se haya borrado
+  //La tarea se puede editar mientras no se haya borrado
   canDelete(): boolean {
     return this.editingTask === null;
   }
@@ -93,16 +92,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  onUpdate(): void {
-    if (this.editFormGroup.valid && this.editingTask) {
-      const updatedTask: Task = {
-        ...this.editingTask,
-        ...this.editFormGroup.value,
-      };
-  
-      this.todoService.updateTask(updatedTask).subscribe(() => {
-        this.router.navigate(['/']); // Redirige al home
-      });
-    }
+  logout(){
+    this.router.navigate(['/']);
   }
 }

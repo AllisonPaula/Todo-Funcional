@@ -6,6 +6,28 @@ body {
   padding: 0;
 }
 
+header {
+  text-align: end;
+}
+
+header .out-btn {
+  background-color: #615f5f;
+  color: white;
+  padding: 8px 18px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  letter-spacing: 0.px;
+
+}
+
+header .out-btn:hover {
+  transition: 0.1s;
+  background-color: #000000;
+}
+
 .container {
   margin: 20px;
   padding: 20px;
@@ -49,7 +71,7 @@ h2 {
   font-size: 16px;
 }
 
-.task-form textarea{
+.task-form textarea {
   resize: none;
 }
 
@@ -233,6 +255,6 @@ h2 {
   border-left: 30px solid #999;
 }
 
-button:hover{
+button:hover {
   transition: 0.2s;
 }
