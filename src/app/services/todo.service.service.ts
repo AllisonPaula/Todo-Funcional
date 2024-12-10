@@ -49,6 +49,7 @@ export class TodoService {
     const index = this.tasks.findIndex((task) => task.id === updatedTask.id);
     if (index !== -1) {
       this.tasks[index] = updatedTask;
+      this.tasksSubject.next(this.tasks); // Notifica el cambio a todos los suscriptores
     }
     return of();
   }

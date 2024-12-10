@@ -15,9 +15,9 @@ export class EditFormComponent implements OnInit {
   @Output() cancelEdit = new EventEmitter<void>();
 
   editFormGroup: FormGroup<{
-    title: FormControl<string>;
-    description: FormControl<string>;
-    status: FormControl<StatusTask>;
+    title: FormControl<string | null>;
+    description: FormControl<string | null>;
+    status: FormControl<StatusTask | null>;
   }>;
 
   isDeleting: boolean = false;
@@ -25,9 +25,9 @@ export class EditFormComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private todoService: TodoService, private router: Router) {
     this.editFormGroup = this.fb.nonNullable.group({
-      title: this.fb.nonNullable.control('', [Validators.required, Validators.minLength(3)]),
-      description: this.fb.nonNullable.control('', [Validators.required, Validators.minLength(5)]),
-      status: this.fb.nonNullable.control('To Do' as StatusTask, Validators.required),
+      title: this.fb.control<string | null>('', [Validators.required, Validators.minLength(3)]),
+      description: this.fb.control<string | null>('', [Validators.required, Validators.minLength(5)]),
+      status: this.fb.control<StatusTask | null>('To Do', Validators.required),
     });
   }
 
@@ -36,7 +36,6 @@ export class EditFormComponent implements OnInit {
 
     if (id) {
       this.todoService.getOne(id).subscribe((task) => {
-        // Verifica si task es undefined y asigna null si lo es
         if (task) {
           this.editingTask = task;
           this.editFormGroup.patchValue({
@@ -45,26 +44,33 @@ export class EditFormComponent implements OnInit {
             status: this.editingTask.status,
           });
         }
-        this.editingTask = null; // Asigna null si no se encuentra la tarea
-        //this.router.navigate(['**']); //Redirige a la pagina de error
+        this.editingTask = null;
       });
     }
   }
 
-  //Editando
+  // Editando
   onUpdate(): void {
     if (this.editFormGroup.valid && this.editingTask) {
       const updatedTask: Task = {
         ...this.editingTask,
         ...this.editFormGroup.value,
       };
-      this.todoService.updateTask(updatedTask).subscribe(() => {
-        this.router.navigate(['/']); // Redirige al home al actualizar la tarea
+      this.todoService.updateTask(updatedTask).subscribe({
+        next: () => {
+          this.updateTask.emit(updatedTask); // Emite la tarea actualizada
+          this.router.navigate(['/']); // Navega a la página principal
+        },
+        error: (err) => {
+          console.error('Error al actualizar la tarea:', err);
+        },
       });
+    } else {
+      console.warn('Formulario no válido o tarea no seleccionada.');
     }
   }
 
-  //Cancelar edicion
+  // Cancelar edicion
   cancelEditing(): void {
     this.router.navigate(['/']);
   }

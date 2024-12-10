@@ -1,11 +1,10 @@
 <div class="container">
-<div class="edit-form">
   <h2>Edit Task</h2>
   <form [formGroup]="editFormGroup" (ngSubmit)="onUpdate()">
     <div>
       <label for="title">Title</label>
       <input id="title" formControlName="title" />
-      <div *ngIf="editFormGroup.get('title')?.invalid && editFormGroup.get('title')?.touched" class="error" >
+      <div *ngIf="editFormGroup.get('title')?.invalid && editFormGroup.get('title')?.touched" class="error">
         Title must be at least 3 characters.
       </div>
     </div>
@@ -25,7 +24,6 @@
       </select>
     </div>
     <button type="submit" class="save-btn" (click)="onUpdate()">Update</button>
-    <button type="button"  class="cancel-btn" (click)="cancelEditing()">Cancel</button>
+    <button type="button" class="cancel-btn" (click)="cancelEditing()">Cancel</button>
   </form>
-</div>
 </div>

@@ -62,14 +62,10 @@ export class HomeComponent implements OnInit {
 
   //Valida que la tarea se pueda editar
   startEditing(task: Task): void {
-    this.editingTask = task;
-    this.isDeleting = false;
-    this.editFormGroup.patchValue({
-      title: this.editingTask.title,
-      description: this.editingTask.description,
-      status: this.editingTask.status,
-    });    
-  }
+    this.editingTask = task; // Establece la tarea en modo de edición
+    this.router.navigate(['edit', task.id]); // Navega al formulario de edición
+  }    
+  
 
 //Editar estado de la tarea cuando este cambie
   updateTaskStatus(index: number, status: Task['status']){
@@ -77,32 +73,22 @@ export class HomeComponent implements OnInit {
   }
   
 //Cancela la edicion de la tarea
-  cancelEditing(): void {
-    this.editingTask = null;
-    this.editFormGroup.reset({ status: 'To Do' });
-  }
+cancelEditing(): void {
+  this.editingTask = null; // Cancela la edición
+  this.router.navigate(['home']); // Redirige al home
+}
 //La tarea se puede editar mientras no se haya borrado
   canDelete(): boolean {
     return this.editingTask === null;
   }
 
   onTaskUpdated(updatedTask: Task): void {
-    this.todoService.updateTask(updatedTask).subscribe(() => {
-      this.loadTasks(); // Refresca la lista de tareas
-      this.cancelEditing(); // Cancela la edición
-    });
+    const index = this.todos.findIndex((task) => task.id === updatedTask.id);
+    if (index !== -1) {
+      this.todos[index] = updatedTask;
+    }
+    this.loadTasks(); // Refresca las tareas desde el servicio
   }
 
-  onUpdate(): void {
-    if (this.editFormGroup.valid && this.editingTask) {
-      const updatedTask: Task = {
-        ...this.editingTask,
-        ...this.editFormGroup.value,
-      };
-  
-      this.todoService.updateTask(updatedTask).subscribe(() => {
-        this.router.navigate(['/']); // Redirige al home
-      });
-    }
-  }
+
 }

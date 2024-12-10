@@ -1,17 +1,39 @@
 <div class="task">
-    <div class="wel">
-      <h1>{{title}}</h1>
-      <!--<p>{{description}}</p>-->
-      <img class="ima" src="assets\avatar.png" alt="avatar" />
-    </div>
-    <div class="us">
-      <label>User</label>
-      <input type="textarea" placeholder="Enter your user">
-      <label>Password</label>
-      <input type="password" placeholder="Enter your password">
-    </div>
-    <div class="in">
-      <button [routerLink]="['home']">Log In</button> <!--Redirige a Page Not Found-->
-      <a href="home">Sig Up</a>  <!--Redirige a la pagina Hom-e-->
-    </div>
+  <div class="wel">
+    <h1>{{ title }}</h1>
+    <img class="ima" src="assets/avatar.png" alt="avatar" />
   </div>
+
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="us">
+      <label for="user">User</label>
+      <input
+        id="user"
+        type="text"
+        formControlName="user"
+        placeholder="Enter your user"
+        [class.invalid]="loginForm.get('user')?.invalid && loginForm.get('user')?.touched"
+      />
+      <div *ngIf="loginForm.get('user')?.invalid && loginForm.get('user')?.touched" class="error">
+        User is required
+      </div>
+
+      <label for="password">Password</label>
+      <input
+        id="password"
+        type="password"
+        formControlName="password"
+        placeholder="Enter your password"
+        [class.invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+      />
+      <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="error">
+        Password is required
+      </div>
+    </div>
+
+    <div class="in">
+      <button type="submit" [disabled]="loginForm.invalid">Log In</button>
+      <a href="**">Sign Up</a>
+    </div>
+  </form>
+</div>

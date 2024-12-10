@@ -37,10 +37,7 @@
 
   <!--Edit task Form-->
   <div *ngIf="editingTask">
-    <app-edit-form
-      [editingTask]="editingTask"
-      (updateTask)="onTaskUpdated($event)"
-      (cancelEdit)="cancelEditing()">
+    <app-edit-form [editingTask]="editingTask" (updateTask)="onTaskUpdated($event)" (cancelEdit)="cancelEditing()">
     </app-edit-form>
   </div>
 </div>
