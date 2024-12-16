@@ -52,25 +52,26 @@ export class EditFormComponent implements OnInit {
   }
   /////////////////////////////////Edit//////////////////////////////////
   onUpdate(): void {
-    if (this.editFormGroup.valid && this.editingTask) {
-      const updatedTask: Task = {
-        ...this.editingTask,
-        ...this.editFormGroup.value,
-      };
-      this.todoService.updateTask(updatedTask).subscribe({
-        error: () => {
-          alert('Tarea no valida');
+    if (this.editFormGroup.valid && this.editingTask) { //Verificar cual es el error con esta linea: const updatedTask: Task = {
+      this.router.navigate(['home']);
+      //const updatedTask: Task = { //This line has problems
+      // ...this.editingTask,
+      //...this.editFormGroup.value,
+      // };
+      //this.todoService.updateTask(updatedTask).subscribe({
+      // error: () => {
+      //  alert('Task Not Valid');
 
-        },
-        complete: () => {
-          console.log("entra")
-          this.updateTask.emit(updatedTask); // Emite la tarea actualizada
-          this.router.navigate(['home']);
-        }
-      })
+      // },
+      // complete: () => {
+      // console.log("entra")
+      //this.updateTask.emit(updatedTask); // Emite la tarea actualizada
+      // this.router.navigate(['home']);
+      //}
+      // })
 
-    } else {
-      alert('Formulario no válido o tarea no seleccionada.');
+      //} else {
+      //  alert('Form not valid');
     }
   }
 
