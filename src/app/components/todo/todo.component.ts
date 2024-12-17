@@ -16,7 +16,7 @@ export class TodoComponent {
   @Output() editTask = new EventEmitter<Task>();
   @Output() updatedTask = new EventEmitter<StatusTask>();
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
   //Eliminar tarea
   onDelete(): void {
     this.deleteTask.emit(this.id);
@@ -28,7 +28,7 @@ export class TodoComponent {
   }
 
   //Actualizar estado de la tarea
-  updateStatus(){
+  updateStatus() {
     this.updatedTask.emit(this.status)
-  } 
+  }
 }

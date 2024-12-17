@@ -11,24 +11,29 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { AppRoutingModule } from './app-routing.module';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
-
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { todoReducer } from './store/reducers/todo.reducers';
 
 @NgModule({
   declarations: [
     AppComponent,
     TodoComponent,
     TaskFormComponent,
-    FilterTodosPipe, 
-    SearchPipe, 
-    EditFormComponent, 
-    PageNotFoundComponent, 
-    HomeComponent, LoginComponent
+    FilterTodosPipe,
+    SearchPipe,
+    EditFormComponent,
+    PageNotFoundComponent,
+    HomeComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    StoreModule.forRoot({ todos: todoReducer }),
+    StoreDevtoolsModule.instrument({ maxAge: 25, autoPause: true })
   ],
   providers: [],
   bootstrap: [AppComponent]
