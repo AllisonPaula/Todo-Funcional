@@ -1,4 +1,16 @@
 /* General Styling */
+.edit-btn img {
+  width: 20px;
+  height: 20px;
+
+}
+
+.delete-btn img {
+  width: 20px;
+  height: 20px;
+
+}
+
 body {
   font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
   background-color: #fff;
@@ -134,7 +146,7 @@ h2 {
   padding: 10px;
   margin-bottom: 15px;
   border-radius: 6px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 .task-title {
@@ -163,7 +175,7 @@ h2 {
 .cancel-btn {
   background-color: #db3529;
   color: white;
-  padding: 8px 15px;
+  padding: 6px 10px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -197,7 +209,7 @@ h2 {
 .edit-btn {
   background-color: #026991;
   color: white;
-  padding: 8px 15px;
+  padding: 6px 10px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
