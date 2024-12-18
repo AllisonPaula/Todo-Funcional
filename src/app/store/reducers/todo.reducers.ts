@@ -2,24 +2,33 @@ import { createReducer, on } from '@ngrx/store';
 import { loadTodos, addTodo, updateTodo, deleteTodo } from '../actions/todo.actions';
 import { Task } from '../../interfaces/todo.interface';
 
-const initialState: Task[] = JSON.parse(localStorage.getItem('todos') || '[]');
+export interface TodoState {
+    tasks: Task[];
+}
+
+const initialState: TodoState = {
+    tasks: JSON.parse(localStorage.getItem('tasks') || '[]'),
+};
 
 export const todoReducer = createReducer(
     initialState,
-    on(loadTodos, state => state),
+    on(loadTodos, (state) => ({
+        ...state,
+        tasks: JSON.parse(localStorage.getItem('tasks') || '[]'),
+    })),
     on(addTodo, (state, { task }) => {
-        const updatedState = [...state, task];
-        localStorage.setItem('todos', JSON.stringify(updatedState));
-        return updatedState;
+        const updatedTasks = [...state.tasks, task];
+        localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+        return { ...state, tasks: updatedTasks };
     }),
     on(updateTodo, (state, { task }) => {
-        const updatedState = state.map(t => t.id === task.id ? task : t);
-        localStorage.setItem('todos', JSON.stringify(updatedState));
-        return updatedState;
+        const updatedTasks = state.tasks.map(t => t.id === task.id ? task : t);
+        localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+        return { ...state, tasks: updatedTasks };
     }),
     on(deleteTodo, (state, { id }) => {
-        const updatedState = state.filter(t => t.id !== id);
-        localStorage.setItem('todos', JSON.stringify(updatedState));
-        return updatedState;
+        const updatedTasks = state.tasks.filter(task => task.id !== id);
+        localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+        return { ...state, tasks: updatedTasks };
     })
 );
